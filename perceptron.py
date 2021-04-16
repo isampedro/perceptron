@@ -1,20 +1,23 @@
 import numpy as np
+import random
 
 
-def simplePerceptron(x, y, N, K, eta, calculateError, g):
-    xArr = np.array(x)
-    yArr = np.array(y)
+def simplePerceptron(entry, expectedExit, N, K, eta, calculateError, g, MAX_ROUNDS):
+    entryArr = np.array(entry)
+    expectedExitArr = np.array(expectedExit)
     w = np.zeros(N+1)
     error = 1
-    error_min = N*2
+    error_min = K*2
     i = 0
-    while error > 0 and i < K:
-        h = np.dot(xArr[i], w)
-        deltaW = eta*(yArr[i] - g(h))*xArr[i]
-        w += deltaW
-        error = calculateError(h, yArr, N)
+    while error > 0 and i < MAX_ROUNDS:
+        i_k = random.randint(0, K-1)
+        h = np.dot(entryArr[i_k], w)
+        g_h = g(h)
+        deltaW = eta*(expectedExitArr[i_k] - g_h)*entryArr[i_k]
+        w = w + deltaW
+        error = calculateError(entryArr, expectedExitArr, w, g, K)
         if error < error_min:
             error_min = error
-            ans = w
-        i += 1
-    return ans
+            w_min = w
+        i = i + 1
+    return w_min
