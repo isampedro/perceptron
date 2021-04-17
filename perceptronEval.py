@@ -17,8 +17,10 @@ switcherErrorType = {
 }
 errorTypeFunc = switcherErrorType.get(json_data['errorType'], 'Invalid error type')
 
-ans = perceptron.simplePerceptron(json_data['entry'], json_data['exitValue'], 
+ans = perceptron.simplePerceptron(json_data['entry'], json_data['exitValues'], 
                                     json_data['N'], json_data['K'], json_data['eta'], 
                                     errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'])
+print(ans)
+ans[0] = json_data['entry'][0][0]*ans[0]
 
-plotter.plot(ans)
+plotter.plot(ans, json_data['exitValues'])

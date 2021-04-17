@@ -1,9 +1,9 @@
 {
-    "entry": [[2, -1, 1], [2, 1, -1], [2, -1, -1], [2, 1, 1]],
-    "exitValue": [-1, -1, -1, 1],
+    "entry": [[-0.5, -1, 1], [-0.5, 1, -1], [-0.5, -1, -1], [-0.5, 1, 1]],
+    "exitValues": [-1, -1, -1, 1],
     "N": 2,
     "K": 4,
-    "eta": 1,
+    "eta": 0.00000001,
     "errorType": "square",
     "simplePerceptronType": "scalar",
     "limit": 500
