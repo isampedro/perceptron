@@ -2,7 +2,7 @@ import numpy as np
 import random
 import json
 
-def simplePerceptron(entry, expectedExit, N, K, eta, calculateError, g, MAX_ROUNDS, beta, errorMinStart):
+def simplePerceptron(entry, expectedExit, N, K, eta, calculateError, g, MAX_ROUNDS, beta, errorMinStart, deltaWFunc, gder):
     entryArr = np.array(entry)
     expectedExitArr = np.array(expectedExit)
     w = np.zeros(N+1)
@@ -11,10 +11,9 @@ def simplePerceptron(entry, expectedExit, N, K, eta, calculateError, g, MAX_ROUN
     errors = []
     i = 0
     while error > 0 and i < MAX_ROUNDS:
-        i_k = random.randint(0, K-1)
+        i_k = i % K
         h = np.dot(entryArr[i_k], w)
-        g_h = g(h, beta)
-        deltaW = eta*(expectedExitArr[i_k][0] - g_h)*entryArr[i_k]
+        deltaW = deltaWFunc(eta, g, gder, h, expectedExitArr[i_k][0], entryArr[i_k], beta)
         w = w + deltaW
         error = calculateError(entryArr, expectedExitArr, w, g, K, beta)
         errors.append({'error': error, 'iteration': i})
