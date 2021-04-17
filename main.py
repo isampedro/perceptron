@@ -5,12 +5,17 @@ import json
 import plotter
 import simpleFileParser as sfp
 import deltaW
+import scaler
 
 with open('arguments.json', 'r') as j:
     json_data = json.load(j)
 
 ex2Input = sfp.parseFile('ex2_input.tsv')
+ex2Input = scaler.scale(ex2Input)
+for elem in ex2Input:
+    elem.insert(0, 1)
 ex2DesiredOutput = sfp.parseFile('ex2_desired_output.tsv')
+ex2DesiredOutput = scaler.scale(ex2DesiredOutput)
 
 switcherSimplePerceptronType = {
     'scalar': simplePerceptronTypes.scalar,
