@@ -26,7 +26,7 @@ if json_data['exercise'] == 1:
 
     ans = perceptron.simplePerceptronJSON(json_data['entry'], json_data['exitValues'], 
                                 json_data['N'], json_data['K'], json_data['eta'], 
-                                errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'])
+                                errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'])
     w_min = ans['w_min']
     errors = ans['errors']
     w_min[0] = json_data['entry'][0][0]*w_min[0]
@@ -40,7 +40,7 @@ else:
         errorTypeFunc = switcherErrorType.get(json_data['errorType'], 'Invalid error type')
         ans = perceptron.simplePerceptronPandas(ex2Input, ex2DesiredOutput, 
                                 json_data['N'], json_data['K'], json_data['eta'], 
-                                errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'])
+                                errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'])
         w_min = ans['w_min']
         errors = ans['errors']
         w_min[0] = ex2Input[0][0]*w_min[0]

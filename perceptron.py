@@ -2,12 +2,12 @@ import numpy as np
 import random
 import json
 
-def simplePerceptronJSON(entry, expectedExit, N, K, eta, calculateErrorJSON, g, MAX_ROUNDS, beta):
+def simplePerceptronJSON(entry, expectedExit, N, K, eta, calculateErrorJSON, g, MAX_ROUNDS, beta, errorMinStart):
     entryArr = np.array(entry)
     expectedExitArr = np.array(expectedExit)
     w = np.zeros(N+1)
     error = 1
-    error_min = K*2
+    error_min = errorMinStart
     errors = []
     i = 0
     while error > 0 and i < MAX_ROUNDS:
@@ -24,12 +24,12 @@ def simplePerceptronJSON(entry, expectedExit, N, K, eta, calculateErrorJSON, g, 
         i = i + 1
     return { 'errors': errors, 'w_min': w_min.tolist() }
 
-def simplePerceptronPandas(entry, expectedExit, N, K, eta, calculateErrorPandas, g, MAX_ROUNDS, beta):
+def simplePerceptronPandas(entry, expectedExit, N, K, eta, calculateErrorPandas, g, MAX_ROUNDS, beta, errorMinStart):
     entryArr = np.array(entry)
     expectedExitArr = np.array(expectedExit)
     w = np.zeros(N+1)
     error = 1
-    error_min = K*K
+    error_min = errorMinStart
     errors = []
     i = 0
     while error > 0 and i < MAX_ROUNDS:
