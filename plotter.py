@@ -8,22 +8,22 @@ def plotEx1( ans, exitValues ):
     plt.ylabel('E2')
     plt.plot(x, y)
 
-    if exitValues[0] == 1:
+    if exitValues[0][0] == 1:
         plt.plot(-1,1,marker='o', color='yellow')
     else:
         plt.plot(-1,1,marker='o', color='red')
     plt.annotate("(-1,1)", (-1,1))
-    if exitValues[2] == 1:
+    if exitValues[2][0] == 1:
         plt.plot(-1,-1,marker='o', color='yellow')
     else:
         plt.plot(-1,-1,marker='o', color='red')
     plt.annotate("(-1,-1)", (-1,-1))
-    if exitValues[3] == 1:
+    if exitValues[3][0] == 1:
         plt.plot(1,1,marker='o', color='yellow')
     else:
         plt.plot(1,1,marker='o', color='red')
     plt.annotate("(1,1)", (1,1))
-    if exitValues[1] == 1:
+    if exitValues[1][0] == 1:
         plt.plot(1,-1,marker='o', color='yellow')
     else:
         plt.plot(1,-1,marker='o', color='red')

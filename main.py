@@ -16,15 +16,14 @@ switcherSimplePerceptronType = {
     'nonLinear' : simplePerceptronTypes.nonLinear,
 }
 simplePerceptronTypeFunc = switcherSimplePerceptronType.get(json_data['simplePerceptronType'], 'Invalid simple perceptron type')
+switcherErrorType = {
+    'square': calculateError.squareError
+}
+errorTypeFunc = switcherErrorType.get(json_data['errorType'], 'Invalid error type')
 
 
 if json_data['exercise'] == 1:
-    switcherErrorType = {
-        'square': calculateError.squareErrorJSON
-    }
-    errorTypeFunc = switcherErrorType.get(json_data['errorType'], 'Invalid error type')
-
-    ans = perceptron.simplePerceptronJSON(json_data['entry'], json_data['exitValues'], 
+    ans = perceptron.simplePerceptron(json_data['entry'], json_data['exitValues'], 
                                 json_data['N'], json_data['K'], json_data['eta'], 
                                 errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'])
     w_min = ans['w_min']
@@ -34,11 +33,7 @@ if json_data['exercise'] == 1:
     plotter.plotErrors(errors)
 else:
     if json_data['exercise'] == 2:
-        switcherErrorType = {
-            'square': calculateError.squareErrorPandas
-        }
-        errorTypeFunc = switcherErrorType.get(json_data['errorType'], 'Invalid error type')
-        ans = perceptron.simplePerceptronPandas(ex2Input, ex2DesiredOutput, 
+        ans = perceptron.simplePerceptron(ex2Input, ex2DesiredOutput, 
                                 json_data['N'], json_data['K'], json_data['eta'], 
                                 errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'])
         w_min = ans['w_min']
