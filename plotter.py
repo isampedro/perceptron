@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def plot( ans, exitValues ):
+def plotEx1( ans, exitValues ):
     x = np.linspace(-2, 2, 200)
     y = (-x*ans[1]-ans[0])/ans[2]
     plt.xlabel('E1')
@@ -29,6 +29,17 @@ def plot( ans, exitValues ):
         plt.plot(1,-1,marker='o', color='red')
     plt.annotate("(1,-1)", (1,-1))
 
+
+    plt.axhline(y=0, color='k')
+    plt.axvline(x=0, color='k')
+    plt.show()
+
+def plotEx2( ans):
+    x = np.linspace(-2, 2, 200)
+    y = (-x*ans[1]-ans[0])/ans[2]
+    plt.xlabel('E1')
+    plt.ylabel('E2')
+    plt.plot(x, y)
 
     plt.axhline(y=0, color='k')
     plt.axvline(x=0, color='k')
