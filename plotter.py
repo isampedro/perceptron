@@ -34,11 +34,26 @@ def plotEx1( ans, exitValues ):
     plt.axvline(x=0, color='k')
     plt.show()
 
-def plotEx2( ans):
+def plotEx2( ans ):
     x = np.linspace(-2, 2, 200)
     y = (-x*ans[1]-ans[0])/ans[2]
     plt.xlabel('E1')
     plt.ylabel('E2')
+    plt.plot(x, y)
+
+    plt.axhline(y=0, color='k')
+    plt.axvline(x=0, color='k')
+    plt.show()
+
+def plotErrors( errors ):
+    x = []
+    y = []
+    for error in errors:
+        x.append(error['iteration'])
+        y.append(error['error'])
+     
+    plt.xlabel('Iteration')
+    plt.ylabel('Error')
     plt.plot(x, y)
 
     plt.axhline(y=0, color='k')

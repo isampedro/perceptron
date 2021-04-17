@@ -5,8 +5,8 @@
     "K": 200,
     "eta": 0.00000001,
     "errorType": "square",
-    "simplePerceptronType": "scalar",
+    "simplePerceptronType": "nonLinear",
     "beta": 1,
-    "limit": 10000,
+    "limit": 1000,
     "exercise": 2
 }

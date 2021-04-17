@@ -27,8 +27,11 @@ if json_data['exercise'] == 1:
     ans = perceptron.simplePerceptronJSON(json_data['entry'], json_data['exitValues'], 
                                 json_data['N'], json_data['K'], json_data['eta'], 
                                 errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'])
-    ans[0] = json_data['entry'][0][0]*ans[0]
-    plotter.plotEx1(ans, json_data['exitValues'])
+    w_min = ans['w_min']
+    errors = ans['errors']
+    w_min[0] = json_data['entry'][0][0]*w_min[0]
+    plotter.plotEx1(w_min, json_data['exitValues'])
+    plotter.plotErrors(errors)
 else:
     if json_data['exercise'] == 2:
         switcherErrorType = {
@@ -38,5 +41,8 @@ else:
         ans = perceptron.simplePerceptronPandas(ex2Input, ex2DesiredOutput, 
                                 json_data['N'], json_data['K'], json_data['eta'], 
                                 errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'])
-        ans[0] = ex2Input[0][0]*ans[0]
-        plotter.plotEx2(ans)
+        w_min = ans['w_min']
+        errors = ans['errors']
+        w_min[0] = ex2Input[0][0]*w_min[0]
+        plotter.plotEx2(w_min)
+        plotter.plotErrors(errors)
