@@ -56,3 +56,6 @@ else:
         w_min[0] = ex2Input[0][0]*w_min[0]
         plotter.plotEx2(w_min)
         plotter.plotErrors(errors)
+    else:
+        if json_data['exercise'] == 3:
+            i = 0

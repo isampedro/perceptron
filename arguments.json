@@ -4,7 +4,7 @@
     "N": 3,
     "K": 200,
     "errorMinStart": 1,
-    "eta": 0.001,
+    "eta": 0.00001,
     "errorType": "square",
     "simplePerceptronType": "nonLinear",
     "beta": 1,

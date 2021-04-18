@@ -40,7 +40,7 @@ class MultiLayerPerceptron:
     def algorithm(self, ej):
         if ej == "XOR":
         #           bias   x    y    salida
-            data = [[1.0, 1.0, 1.0. -1.0],
+            data = [[1.0, 1.0, 1.0, -1.0],
                     [1.0, -1.0, 1.0, 1.0],
                     [1.0, 1.0, -1.0, 1.0],
                     [1.0, -1.0, -1.0, -1.0]]
