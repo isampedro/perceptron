@@ -50,20 +50,20 @@ def plotEx2( ans, inputPoints ):
 
 def plotEx3_errors(errors, worst_errors):
         fig,ax = plt.subplots()
-        ax.set_xlabel("Época")
+        ax.set_xlabel("Epoch")
         ax.set_ylabel("Error")
         epochs = []
         for i in range(len(errors)):
             epochs.append(i)
-        plt.plot(epochs, errors, label='Error promedio')
-        plt.plot(epochs, worst_errors, label='Máximo error')
+        plt.plot(epochs, errors, label='Error Average')
+        plt.plot(epochs, worst_errors, label='Maximum error')
         plt.legend(fontsize = 10)
         plt.grid(True)
         plt.show()
 
 def plotEx3_accuracy(accuracy):
         fig,ax = plt.subplots()
-        ax.set_xlabel("Época")
+        ax.set_xlabel("Epoch")
         ax.set_ylabel("Precisión")
         epochs = []
         for i in range(len(accuracy)):

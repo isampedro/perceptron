@@ -11,28 +11,6 @@ from multiLayerPerceptron import MultiLayerPerceptron
 with open('arguments.json', 'r') as j:
     json_data = json.load(j)
 
-with open('config.json', 'r') as file:
-    data = json.load(file)
-    function = data['function']
-    alpha = data['alpha']
-    beta = data['beta']
-    epochs = data['epochs']
-    perceptron = data['perceptron']
-    error = data['error']
-    hiddenLayers = data['hiddenLayers']
-    nodesPerLayer = data['nodesPerLayer']
-    adaptive = data['adaptive']
-    a = data['a']
-    b = data['b']
-    errorRange = data['errorRange']
-
-if (perceptron == 'multi-layer'):
-    p = MultiLayerPerceptron(alpha = alpha, beta = beta, iterations = epochs, hiddenLayers = hiddenLayers, error = error, errorRange = errorRange, nodesPerLayer = nodesPerLayer, adaptive = adaptive, a = a, b = b)
-
-p.train(function)
-
-"""
-
 ex2Input = sfp.parseFile('ex2_input.tsv')
 ex2DesiredOutput = sfp.parseFile('ex2_desired_output.tsv')
 if json_data['exercise'] == 2 and json_data['simplePerceptronType'] == 'nonLinear':
@@ -82,5 +60,9 @@ else:
         plotter.plotErrors(errors)
     else:
         if json_data['exercise'] == 3:
-            i = 0
-"""
+            p = MultiLayerPerceptron(json_data['alpha'], json_data['beta'], json_data['limit'], json_data['hiddenLayers'],
+                json_data['error'], json_data['errorRange'], json_data['N'], json_data['isAdaptive'], 
+                json_data['a'], json_data['b'])
+            ans = p.train(json_data['function'])
+            plotter.plotEx3_errors(ans['errorEpoch'], ans['wErrorEpoch'])
+            plotter.plotEx3_accuracy(ans['accuracy'])

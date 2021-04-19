@@ -14,7 +14,7 @@ import plotter
 
 class MultiLayerPerceptron:
     
-    def __init__(self, alpha, beta, iterations, hiddenLayers, error, nodesPerLayer, errorRange, adaptive, a, b):
+    def __init__(self, alpha, beta, iterations, hiddenLayers, error, errorRange, nodesPerLayer, adaptive, a, b):
         self.alpha = alpha 
         self.beta = beta 
         self.iterations = iterations # máxima cantidad de épocas que puede tener el algoritmo
@@ -174,10 +174,7 @@ class MultiLayerPerceptron:
                 
             if totalError <= self.error*len(data) or epoch == self.iterations - 1:
                 break
-            
-        plotter.plotEx3_errors(errorEpoch, wErrorEpoch)
-        plotter.plotEx3_accuracy(accuracy)
-        return
+        return { 'errorEpoch': errorEpoch, 'wErrorEpoch': wErrorEpoch, 'accuracy': accuracy }
 
     
 
