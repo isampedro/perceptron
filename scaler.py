@@ -13,6 +13,6 @@ def scale(x):
         elemToAdd = []
         for i in range(0, len(x[0])):
             if maxInput[i] != minInput[i]:
-                elemToAdd.append((elem[i]-minInput[i])/(maxInput[i]-minInput[i]))
+                elemToAdd.append(((elem[i]-minInput[i])/(maxInput[i]-minInput[i]))*2-1)
         elems.append(elemToAdd)
     return elems.copy()
