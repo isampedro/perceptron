@@ -36,7 +36,6 @@ def plotEx1( ans, exitValues ):
     plt.show()
 
 def plotEx2( ans, inputPoints ):
-
     fig = plt.figure()
     ax = Axes3D(fig)
 

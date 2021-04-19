@@ -12,6 +12,9 @@ with open('arguments.json', 'r') as j:
 
 ex2Input = sfp.parseFile('ex2_input.tsv')
 ex2DesiredOutput = sfp.parseFile('ex2_desired_output.tsv')
+if json_data['exercise'] == 2 and json_data['simplePerceptronType'] == 'nonLinear':
+    ex2Input = scaler.scale(ex2Input)
+    ex2DesiredOutput = scaler.scale(ex2DesiredOutput)
 
 switcherSimplePerceptronType = {
     'scalar': simplePerceptronTypes.scalar,

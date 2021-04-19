@@ -1,12 +1,8 @@
 import numpy as np
 import random
 import json
-import scaler
 
 def simplePerceptron(entry, expectedExit, N, K, eta, calculateError, g, MAX_ROUNDS, beta, errorMinStart, deltaWFunc, gder, exercise):
-    if exercise == 2:
-        entry = scaler.scale(entry)
-        expectedExit = scaler.scale(expectedExit)
     for elem in entry:
         elem.insert(0, 1)
     entryArr = np.array(entry)
