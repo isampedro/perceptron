@@ -2,7 +2,7 @@
     "entry": [[-1, 1], [1, -1], [-1, -1], [ 1, 1]],
     "exitValues": [[-1], [-1], [-1], [1]],
     "hiddenLayers": 3,
-    "N": 4,
+    "N": 3,
     "K": 200,
     "error": 0.1,
     "errorRange": 0.2,
@@ -11,11 +11,11 @@
     "errorType": "square",
     "simplePerceptronType": "nonLinear",
     "alpha": 0.1,
-    "beta": 0.5,
-    "limit": 1000,
+    "beta": 1,
+    "limit": 1000000,
     "a": 0.001,
     "b": 0.01,
     "isAdaptive": true,
     "function": "XOR",
-    "exercise": 3
+    "exercise": 2
 }

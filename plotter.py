@@ -48,7 +48,7 @@ def plotEx2( ans, inputPoints ):
 
     plt.show()
 
-def plotEx3_errors(errors, worst_errors):
+def plotEx3Errors(errors, worst_errors):
         fig,ax = plt.subplots()
         ax.set_xlabel("Epoch")
         ax.set_ylabel("Error")
@@ -61,7 +61,7 @@ def plotEx3_errors(errors, worst_errors):
         plt.grid(True)
         plt.show()
 
-def plotEx3_accuracy(accuracy):
+def plotAccuracy(accuracy):
         fig,ax = plt.subplots()
         ax.set_xlabel("Epoch")
         ax.set_ylabel("Precisión")

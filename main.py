@@ -41,28 +41,28 @@ if json_data['exercise'] == 1:
     ans = perceptron.simplePerceptron(json_data['entry'], json_data['exitValues'], 
                                 json_data['N'], json_data['K'], json_data['eta'], 
                                 errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'],
-                                simpleDeltaWFunc, None, json_data['exercise'])
+                                simpleDeltaWFunc, None, json_data['exercise'], json_data['error'])
     w_min = ans['w_min']
     errors = ans['errors']
-    w_min[0] = json_data['entry'][0][0]*w_min[0]
-    plotter.plotEx1(w_min, json_data['exitValues'])
+    plotter.plotEx1(ans['w_min'], json_data['exitValues'])
     plotter.plotErrors(errors)
+    plotter.plotAccuracy(ans['accuracies'])
 else:
     if json_data['exercise'] == 2:
         ans = perceptron.simplePerceptron(ex2Input, ex2DesiredOutput, 
                                 json_data['N'], json_data['K'], json_data['eta'], 
                                 errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'], 
-                                simpleDeltaWFunc, simplePerceptronTypes.nonLinearDer, json_data['exercise'])
+                                simpleDeltaWFunc, simplePerceptronTypes.nonLinearDer, json_data['exercise'], json_data['error'])
         w_min = ans['w_min']
         errors = ans['errors']
-        w_min[0] = ex2Input[0][0]*w_min[0]
         plotter.plotEx2(w_min, ex2Input)
         plotter.plotErrors(errors)
+        plotter.plotAccuracy(ans['accuracies'])
     else:
         if json_data['exercise'] == 3:
             p = MultiLayerPerceptron(json_data['alpha'], json_data['beta'], json_data['limit'], json_data['hiddenLayers'],
                 json_data['error'], json_data['errorRange'], json_data['N'], json_data['isAdaptive'], 
                 json_data['a'], json_data['b'])
             ans = p.train(json_data['function'])
-            plotter.plotEx3_errors(ans['errorEpoch'], ans['wErrorEpoch'])
-            plotter.plotEx3_accuracy(ans['accuracy'])
+            plotter.plotEx3Errors(ans['errorEpoch'], ans['wErrorEpoch'])
+            plotter.plotAccuracy(ans['accuracy'])
