@@ -1,4 +1,6 @@
 import numpy as np
+import plotter
+
 
 
 # El índice i se refiere a las unidades de salida
@@ -12,7 +14,7 @@ import numpy as np
 
 class MultiLayerPerceptron:
     
-    def init(self, alpha, beta, iterations, hiddenLayers, error, nodesPerLayer, trainingSet):
+    def __init__(self, alpha, beta, iterations, hiddenLayers, error, nodesPerLayer, errorRange, adaptive, a, b):
         self.alpha = alpha 
         self.beta = beta 
         self.iterations = iterations # máxima cantidad de épocas que puede tener el algoritmo
@@ -20,6 +22,10 @@ class MultiLayerPerceptron:
         self.totalLayers = hiddenLayers + 2 
         self.nodesPerLayer = nodesPerLayer # cantidad de nodos que tengo en una capa
         self.error = error  # error que tolero
+        self.errorRange = errorRange    # margen de error tolerado 
+        self.adaptive = adaptive
+        self.a = a
+        self.b = b
 
     # g() es la función que utilizo --> g(h) = tangh(beta * h)
     def g(self, x):
@@ -35,15 +41,47 @@ class MultiLayerPerceptron:
             hmi += W[m, i, j] * V[m-1][j]
         return hmi
 
+    def adaptiveAlpha(self, errors):
+        if(len(errors) > 8):
+            lastErros = errors[-8:]
+            aux = []
+            aux2 = []
+            for i in range(len(lastErros) - 1):
+                aux.append(lastErros[i] < lastErros[i+1])
+            for i in range(len(lastErros) - 1):
+                aux2.append(lastErros[i] > lastErros[i+1])
+            if all(aux):
+                self.alpha -= self.b * self.alpha
+            if all(aux2):
+                self.alpha += self.a
+            
+            
+
     # ALGORITMO (slide 30)
 
-    def algorithm(self, ej):
+    def train(self, ej):
         if ej == "XOR":
         #           bias   x    y    salida
             data = [[1.0, 1.0, 1.0, -1.0],
                     [1.0, -1.0, 1.0, 1.0],
                     [1.0, 1.0, -1.0, 1.0],
                     [1.0, -1.0, -1.0, -1.0]]
+
+        errorEpoch = []
+        wErrorEpoch = []
+        accuracy = []
+
+        errorMin = len(data) * 2
+
+         
+        test_data = [[1.0,  1.0,  1.0, -1.0],
+                    [1.0, -1.0,  1.0,  1.0],
+                    [1.0,  1.0, -1.0,  1.0],
+                    [1.0, -1.0, -1.0, -1.0]]
+        test_error_per_epoch = []
+        test_worst_error_per_epoch = []
+        test_accuracy = []
+        
         
         # M es el índice de la capa superior 
         self.M = self.totalLayers - 1
@@ -69,15 +107,18 @@ class MultiLayerPerceptron:
             for destinatario in range(self.nodesPerLayer):
                 self.W[1,destinatario,origen] = w[destinatario,origen] # trabajo todo en la capa 1
         
-        for epoca in range(1, self.iterations):
+        for epoch in range(1, self.iterations):
             totalError = 0
+            wError = 0
+            corrects = 0
+            incorrects = 0
             # tomar un ejemplo al azar del conjunto de entrenamiento y aplicarlo a la capa 0 (PASO 2)
             np.random.shuffle(data) # mezclo el conjunto de entrenamiento al azar para seleccionar el primero
             # tomo un ejemplo (u)
             for u in range(len(data)):
-              for k in range(len(data[0]) - 1):
-                #nodos de entrada
-                self.V[0][k] = data[u][k]
+                for k in range(len(data[0]) - 1):
+                    #nodos de entrada
+                    self.V[0][k] = data[u][k]
                 # propagar la entrada hasta la capa de salida (PASO 3)
                 for m in range(1, self.M):
                     for j in range(1, self.nodesPerLayer):
@@ -87,10 +128,16 @@ class MultiLayerPerceptron:
                 for i in range(0, self.exitNodes):
                     hmi = self.h(self.M, i, self.nodesPerLayer, self.W, self.V)
                     self.V[self.M][i] = self.g(hmi)
+                if self.V[self.M][i] >= data[u][-1] - self.errorRange and self.V[self.M][i] <= data[u][-1] + self.errorRange:
+                    corrects += 1
+                else:
+                    incorrects += 1
+
                 # calcular el error para la capa de salida (PASO 4)
                 for i in range(0, self.exitNodes):
                     #  n[-1] es el último item de la lista n --> data[u][-1] es la salida deseada de mi ejemplo tomado
-                    self.d[self.M][i] = self.derivatedG(hmi) * (data[u][-1][i] - self.V[self.M][i])
+                    hmi = self.h(self.M, i, self.nodesPerLayer, self.W, self.V)
+                    self.d[self.M][i] = self.derivatedG(hmi) * (data[u][-1] - self.V[self.M][i])
                 # retropropagar el error (PASO 5)  
                 for m in range(self.M, 1, -1):  #range(start_value, end_value, step)
                     for j in range(0, self.nodesPerLayer):
@@ -108,7 +155,33 @@ class MultiLayerPerceptron:
                 #Calcular el error. Si error > COTA, ir al paso 2 (PASO 7)
                 for i in range(0, self.exitNodes):
                     # comparo la salida deseada con la salida de la unidad de la última capa
-                    totalError += abs(data[u][-1][i] - self.V[self.M][i])
+                    if abs(data[u][-1] - self.V[self.M][i]) > wError:
+                        wError = abs(data[u][-1] - self.V[self.M][i])
+                    totalError += abs(data[u][-1] - self.V[self.M][i])
+                    
+                
+            errorEpoch.append(totalError/len(data))
+            wErrorEpoch.append(wError)
+            # utilizo el 0.0 para pasar corrects e incorrects (que son enteros) a float
+            accuracy.append (corrects / (0.0 + corrects  + incorrects ))
+
+            if self.adaptive and epoch % 8 == 0:
+                self.adaptiveAlpha(errorEpoch)
+
+            if totalError < errorMin:
+                errorMin = totalError
+                self.w_min = self.W
+                
+            if totalError <= self.error*len(data) or epoch == self.iterations - 1:
+                break
+            
+        plotter.plotEx3_errors(errorEpoch, wErrorEpoch)
+        plotter.plotEx3_accuracy(accuracy)
+        return
+
+    
+
+        
                     
                  
 

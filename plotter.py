@@ -48,6 +48,31 @@ def plotEx2( ans, inputPoints ):
 
     plt.show()
 
+def plotEx3_errors(errors, worst_errors):
+        fig,ax = plt.subplots()
+        ax.set_xlabel("Época")
+        ax.set_ylabel("Error")
+        epochs = []
+        for i in range(len(errors)):
+            epochs.append(i)
+        plt.plot(epochs, errors, label='Error promedio')
+        plt.plot(epochs, worst_errors, label='Máximo error')
+        plt.legend(fontsize = 10)
+        plt.grid(True)
+        plt.show()
+
+def plotEx3_accuracy(accuracy):
+        fig,ax = plt.subplots()
+        ax.set_xlabel("Época")
+        ax.set_ylabel("Precisión")
+        epochs = []
+        for i in range(len(accuracy)):
+            epochs.append(i)
+        plt.plot(epochs, accuracy)
+        plt.grid(True)
+        plt.show()
+
+
 def plotErrors( errors ):
     x = []
     y = []
@@ -62,3 +87,4 @@ def plotErrors( errors ):
     plt.axhline(y=0, color='k')
     plt.axvline(x=0, color='k')
     plt.show()
+

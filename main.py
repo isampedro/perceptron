@@ -6,9 +6,32 @@ import plotter
 import simpleFileParser as sfp
 import deltaW
 import scaler
+from multiLayerPerceptron import MultiLayerPerceptron 
 
 with open('arguments.json', 'r') as j:
     json_data = json.load(j)
+
+with open('config.json', 'r') as file:
+    data = json.load(file)
+    function = data['function']
+    alpha = data['alpha']
+    beta = data['beta']
+    epochs = data['epochs']
+    perceptron = data['perceptron']
+    error = data['error']
+    hiddenLayers = data['hiddenLayers']
+    nodesPerLayer = data['nodesPerLayer']
+    adaptive = data['adaptive']
+    a = data['a']
+    b = data['b']
+    errorRange = data['errorRange']
+
+if (perceptron == 'multi-layer'):
+    p = MultiLayerPerceptron(alpha = alpha, beta = beta, iterations = epochs, hiddenLayers = hiddenLayers, error = error, errorRange = errorRange, nodesPerLayer = nodesPerLayer, adaptive = adaptive, a = a, b = b)
+
+p.train(function)
+
+"""
 
 ex2Input = sfp.parseFile('ex2_input.tsv')
 ex2DesiredOutput = sfp.parseFile('ex2_desired_output.tsv')
@@ -60,3 +83,4 @@ else:
     else:
         if json_data['exercise'] == 3:
             i = 0
+"""
