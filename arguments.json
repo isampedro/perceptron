@@ -1,13 +1,13 @@
 {
-    "entry": [[1, -1, 1], [1, 1, -1], [1, -1, -1], [1, 1, 1]],
+    "entry": [[-1, 1], [1, -1], [-1, -1], [ 1, 1]],
     "exitValues": [[-1], [-1], [-1], [1]],
-    "N": 3,
-    "K": 200,
-    "errorMinStart": 1,
-    "eta": 0.00001,
+    "N": 2,
+    "K": 4,
+    "errorMinStart": 30,
+    "eta": 0.000001,
     "errorType": "square",
-    "simplePerceptronType": "nonLinear",
+    "simplePerceptronType": "scalar",
     "beta": 1,
     "limit": 1000,
-    "exercise": 2
+    "exercise": 1
 }

@@ -11,11 +11,7 @@ with open('arguments.json', 'r') as j:
     json_data = json.load(j)
 
 ex2Input = sfp.parseFile('ex2_input.tsv')
-ex2Input = scaler.scale(ex2Input)
-for elem in ex2Input:
-    elem.insert(0, 1)
 ex2DesiredOutput = sfp.parseFile('ex2_desired_output.tsv')
-ex2DesiredOutput = scaler.scale(ex2DesiredOutput)
 
 switcherSimplePerceptronType = {
     'scalar': simplePerceptronTypes.scalar,
@@ -40,7 +36,8 @@ errorTypeFunc = switcherErrorType.get(json_data['errorType'], 'Invalid error typ
 if json_data['exercise'] == 1:
     ans = perceptron.simplePerceptron(json_data['entry'], json_data['exitValues'], 
                                 json_data['N'], json_data['K'], json_data['eta'], 
-                                errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'], simpleDeltaWFunc, None)
+                                errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'],
+                                simpleDeltaWFunc, None, json_data['exercise'])
     w_min = ans['w_min']
     errors = ans['errors']
     w_min[0] = json_data['entry'][0][0]*w_min[0]
@@ -50,11 +47,12 @@ else:
     if json_data['exercise'] == 2:
         ans = perceptron.simplePerceptron(ex2Input, ex2DesiredOutput, 
                                 json_data['N'], json_data['K'], json_data['eta'], 
-                                errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'], simpleDeltaWFunc, simplePerceptronTypes.nonLinearDer)
+                                errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'], 
+                                simpleDeltaWFunc, simplePerceptronTypes.nonLinearDer, json_data['exercise'])
         w_min = ans['w_min']
         errors = ans['errors']
         w_min[0] = ex2Input[0][0]*w_min[0]
-        plotter.plotEx2(w_min)
+        plotter.plotEx2(w_min, ex2Input)
         plotter.plotErrors(errors)
     else:
         if json_data['exercise'] == 3:

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
 
 def plotEx1( ans, exitValues ):
     x = np.linspace(-2, 2, 200)
@@ -34,15 +35,18 @@ def plotEx1( ans, exitValues ):
     plt.axvline(x=0, color='k')
     plt.show()
 
-def plotEx2( ans ):
-    x = np.linspace(-2, 2, 200)
-    y = (-x*ans[1]-ans[0])/ans[2]
-    plt.xlabel('E1')
-    plt.ylabel('E2')
-    plt.plot(x, y)
+def plotEx2( ans, inputPoints ):
 
-    plt.axhline(y=0, color='k')
-    plt.axvline(x=0, color='k')
+    fig = plt.figure()
+    ax = Axes3D(fig)
+
+    x = np.linspace(-10, 10, 2000)
+    y = np.linspace(-10, 10, 2000)
+    z = (-x*ans[1]-ans[0] - y*ans[2])/ans[3]
+    ax.plot(x, y, z)
+    for point in inputPoints:
+        ax.plot(point[0], point[1], point[2], marker='o', color='red')
+
     plt.show()
 
 def plotErrors( errors ):
