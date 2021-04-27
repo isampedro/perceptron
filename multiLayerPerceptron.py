@@ -173,9 +173,42 @@ class MultiLayerPerceptron:
                 self.w_min = self.W
                 
             if totalError <= self.error*len(data) or epoch == self.iterations - 1:
+                self.makeTest(test_data, self.w_min, epoch, test_error_per_epoch, test_worst_error_per_epoch, test_accuracy)
                 break
+            else:
+                self.makeTest(test_data, self.w_min, epoch, test_error_per_epoch, test_worst_error_per_epoch, test_accuracy)
         return { 'errorEpoch': errorEpoch, 'wErrorEpoch': wErrorEpoch, 'accuracy': accuracy }
 
+
+def makeTest(self, test_data, weights, epoch, test_error, test_worst_error, test_accuracy):
+    element_count = 0
+    total_error = 0
+    worst_error = 0
+    W = weights
+    positives = 0
+    negatives = 0
+    for row in test_data:
+        for k in range(len(row)-1):
+            self.V[0][k] = row[k]
+        for m in range(1, self.M):
+            for i in range(1, self.nodesPerLayer):
+                hmi = self.h(m,i,self.nodesPerLayer,W,self.V)
+                self.V[m][i] = self.g(hmi)
+        for i in range(0, self.exitNodes):
+            hmi = self.h(self.M,i,self.nodesPerLayer,W,self.V)
+            self.V[self.M][i] = self.g(hmi)
+        perceptron_output = self.V[self.M][0]
+        element_count += 1
+        if perceptron_output >= row[-1] - self.errorRange and perceptron_output <= row[-1] + self.errorRange:
+            positives += 1
+        else:
+            negatives +=1
+        if abs(perceptron_output - row[-1]) > worst_error:
+            worst_error = abs(perceptron_output - row[1])
+        total_error.append(total_error / len(test_data))
+        test_worst_error.append(worst_error)
+        test_accuracy.append(positives / (0.0 + positives + negatives))
+        
     
 
         
