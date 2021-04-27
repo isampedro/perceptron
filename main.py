@@ -6,6 +6,7 @@ import plotter
 import simpleFileParser as sfp
 import deltaW
 import scaler
+import numpy as np
 from multiLayerPerceptron import MultiLayerPerceptron 
 
 with open('arguments.json', 'r') as j:
@@ -41,11 +42,11 @@ if json_data['exercise'] == 1:
     ans = perceptron.simplePerceptron(json_data['entry'], json_data['exitValues'], 
                                 json_data['N'], json_data['K'], json_data['eta'], 
                                 errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'],
-                                simpleDeltaWFunc, None, json_data['exercise'], json_data['error'], ex2Input, ex2DesiredOutput, 0.9)
+                                simpleDeltaWFunc, None, json_data['exercise'], json_data['error'], ex2Input.copy(), ex2DesiredOutput.copy(), 0.9,
+                                json_data['isAdaptive'], json_data['a'], json_data['b'])
     w_min = ans['w_min']
-    errors = ans['errors']
     plotter.plotEx1(ans['w_min'], json_data['exitValues'])
-    plotter.plotErrors(errors)
+    plotter.plotErrors(ans['errors'], ans['errorsTesting'])
     plotter.plotAccuracy(ans['accuracyTraining'], ans['accuracyTesting'])
 else:
     if json_data['exercise'] == 2:
@@ -55,19 +56,30 @@ else:
         testingOutputArr = []
         trainingArr = []
         trainingOutputArr = []
+        shuffler = np.random.permutation(len(ex2Input))
+        ex2Input = (np.array(ex2Input))[shuffler].tolist()
+        ex2DesiredOutput = (np.array(ex2DesiredOutput))[shuffler].tolist()
         for i in range(0, trainingNumber - 1):
-            trainingArr.append(ex2Input[i])
-            trainingOutputArr.append(ex2DesiredOutput[i])
+            trainingArr.append(ex2Input[i].copy())
+            trainingOutputArr.append(ex2DesiredOutput[i].copy())
         for i in range(trainingNumber, len(ex2Input)-1):
-            testingArr.append(ex2Input[i])
-            testingOutputArr.append(ex2DesiredOutput[i])
+            testingArr.append(ex2Input[i].copy())
+            testingOutputArr.append(ex2DesiredOutput[i].copy())
         ans = perceptron.simplePerceptron(trainingArr, trainingOutputArr, 
                                 json_data['N'], json_data['K'], json_data['eta'], 
                                 errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'], 
-                                simpleDeltaWFunc, simplePerceptronTypes.nonLinearDer, json_data['exercise'], json_data['error'], testingArr, testingOutputArr, 0.9)
-        w_min = ans['w_min']
-        errors = ans['errors']
-        plotter.plotErrors(errors)
+                                simpleDeltaWFunc, simplePerceptronTypes.nonLinearDer, json_data['exercise'], json_data['error'], testingArr, testingOutputArr, 
+                                0.9, json_data['isAdaptive'], json_data['a'], json_data['b'])
+        print(ans['finalEta'])
+        plotter.plotErrors(ans['errors'], ans['errorsTesting'])
+        plotter.plotAccuracy(ans['accuracyTraining'], ans['accuracyTesting'])
+
+        ans = perceptron.crossValidation(ex2Input, ex2DesiredOutput, json_data['N'], json_data['K'],
+                json_data['eta'], errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], 
+                json_data['beta'], json_data['errorMinStart'], simpleDeltaWFunc, simplePerceptronTypes.nonLinearDer,
+                json_data['exercise'], json_data['error'], json_data['isAdaptive'], json_data['a'], json_data['b'], 8)
+        print(ans['finalEta'])
+        plotter.plotErrors(ans['errors'], ans['errorsTesting'])
         plotter.plotAccuracy(ans['accuracyTraining'], ans['accuracyTesting'])
     else:
         if json_data['exercise'] == 3:

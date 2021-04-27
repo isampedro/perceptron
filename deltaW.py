@@ -1,4 +1,3 @@
-
 def linearW(eta, g, gder, h, expectedExit, entry, beta):
     return eta*(expectedExit - g(h, beta))*entry
 

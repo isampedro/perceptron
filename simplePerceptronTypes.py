@@ -12,4 +12,4 @@ def nonLinear(x, beta):
     return np.tanh(beta*x)
 
 def nonLinearDer(x, beta):
-    return beta/np.cosh(beta*x)**2
+    return beta*(1-np.tanh(beta*x)**2)

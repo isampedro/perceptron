@@ -77,18 +77,23 @@ def plotAccuracy(accuracyTraining, accuracyTesting):
         plt.show()
 
 
-def plotErrors( errors ):
+def plotErrors( errors, errorsTesting ):
     x = []
     y = []
+    z = []
     for error in errors:
         x.append(error['iteration'])
         y.append(error['error'])
+    for error in errorsTesting:
+        z.append(error['error'])
      
     plt.xlabel('Iteration')
     plt.ylabel('Error')
-    plt.plot(x, y)
+    plt.plot(x, z, label='Avg Error Testing')
+    plt.plot(x,y, label='Avg Error Training')
 
     plt.axhline(y=0, color='k')
     plt.axvline(x=0, color='k')
+    plt.legend(fontsize=10)
     plt.show()
 
