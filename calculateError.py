@@ -2,7 +2,7 @@ import numpy as np
 
 def squareError(entryArr, expectedExitArr, w, g, N, beta):
     squareErrorVal = 0
-    for i in range(N):
+    for i in range(N-1):
         h = np.dot(entryArr[i], w)
         delta = g(h, beta) - expectedExitArr[i][0]
         squareErrorVal += delta*delta
@@ -11,7 +11,7 @@ def squareError(entryArr, expectedExitArr, w, g, N, beta):
 
 def accuracy( entryArr, expectedExitArr, w, g, N, beta, deltaError):
     corrects = 0
-    for i in range(N):
+    for i in range(N-1):
         h = np.dot(entryArr[i], w)
         if g(h, beta) >= expectedExitArr[i][0] - deltaError and g(h, beta) <= expectedExitArr[i][0] + deltaError:
             corrects = corrects + 1

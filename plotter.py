@@ -48,27 +48,31 @@ def plotEx2( ans, inputPoints ):
 
     plt.show()
 
-def plotEx3Errors(errors, worst_errors):
+def plotEx3Errors(errors, worst_errors, testEPE, testWorstEPE):
         fig,ax = plt.subplots()
         ax.set_xlabel("Epoch")
         ax.set_ylabel("Error")
         epochs = []
         for i in range(len(errors)):
             epochs.append(i)
-        plt.plot(epochs, errors, label='Error Average')
-        plt.plot(epochs, worst_errors, label='Maximum error')
+        plt.plot(epochs, errors, label='Avg Error Training')
+        plt.plot(epochs, worst_errors, label='Maxi Error Training')
+        plt.plot(epochs, testWorstEPE, label='Max Error Testing')
+        plt.plot(epochs, testEPE, label='AVg Error Testing')
         plt.legend(fontsize = 10)
         plt.grid(True)
         plt.show()
 
-def plotAccuracy(accuracy):
+def plotAccuracy(accuracyTraining, accuracyTesting):
         fig,ax = plt.subplots()
         ax.set_xlabel("Epoch")
-        ax.set_ylabel("Precisión")
+        ax.set_ylabel("Precision")
         epochs = []
-        for i in range(len(accuracy)):
+        for i in range(len(accuracyTesting)):
             epochs.append(i)
-        plt.plot(epochs, accuracy)
+        plt.plot(epochs, accuracyTesting, label="Accuracy Testing")
+        plt.plot(epochs, accuracyTraining, label="Accuracy Training")
+        plt.legend(fontsize = 10)
         plt.grid(True)
         plt.show()
 

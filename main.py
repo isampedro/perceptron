@@ -41,28 +41,39 @@ if json_data['exercise'] == 1:
     ans = perceptron.simplePerceptron(json_data['entry'], json_data['exitValues'], 
                                 json_data['N'], json_data['K'], json_data['eta'], 
                                 errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'],
-                                simpleDeltaWFunc, None, json_data['exercise'], json_data['error'])
+                                simpleDeltaWFunc, None, json_data['exercise'], json_data['error'], ex2Input, ex2DesiredOutput, 0.9)
     w_min = ans['w_min']
     errors = ans['errors']
     plotter.plotEx1(ans['w_min'], json_data['exitValues'])
     plotter.plotErrors(errors)
-    plotter.plotAccuracy(ans['accuracies'])
+    plotter.plotAccuracy(ans['accuracyTraining'], ans['accuracyTesting'])
 else:
     if json_data['exercise'] == 2:
-        ans = perceptron.simplePerceptron(ex2Input, ex2DesiredOutput, 
+        testingNumber = int(json_data['K']*0.1)
+        trainingNumber = json_data['K'] - testingNumber
+        testingArr = []
+        testingOutputArr = []
+        trainingArr = []
+        trainingOutputArr = []
+        for i in range(0, trainingNumber - 1):
+            trainingArr.append(ex2Input[i])
+            trainingOutputArr.append(ex2DesiredOutput[i])
+        for i in range(trainingNumber, len(ex2Input)-1):
+            testingArr.append(ex2Input[i])
+            testingOutputArr.append(ex2DesiredOutput[i])
+        ans = perceptron.simplePerceptron(trainingArr, trainingOutputArr, 
                                 json_data['N'], json_data['K'], json_data['eta'], 
                                 errorTypeFunc, simplePerceptronTypeFunc, json_data['limit'], json_data['beta'], json_data['errorMinStart'], 
-                                simpleDeltaWFunc, simplePerceptronTypes.nonLinearDer, json_data['exercise'], json_data['error'])
+                                simpleDeltaWFunc, simplePerceptronTypes.nonLinearDer, json_data['exercise'], json_data['error'], testingArr, testingOutputArr, 0.9)
         w_min = ans['w_min']
         errors = ans['errors']
-        plotter.plotEx2(w_min, ex2Input)
         plotter.plotErrors(errors)
-        plotter.plotAccuracy(ans['accuracies'])
+        plotter.plotAccuracy(ans['accuracyTraining'], ans['accuracyTesting'])
     else:
         if json_data['exercise'] == 3:
             p = MultiLayerPerceptron(json_data['alpha'], json_data['beta'], json_data['limit'], json_data['hiddenLayers'],
                 json_data['error'], json_data['errorRange'], json_data['N'], json_data['isAdaptive'], 
                 json_data['a'], json_data['b'], json_data['trainingSize'])
             ans = p.train(json_data['function'])
-            plotter.plotEx3Errors(ans['errorEpoch'], ans['wErrorEpoch'])
-            plotter.plotAccuracy(ans['accuracy'])
+            plotter.plotEx3Errors(ans['errorEpoch'], ans['wErrorEpoch'], ans['testEPE'], ans['testWorstEPE'])
+            plotter.plotAccuracy(ans['accuracyTraining'], ans['accuracyTesting'])
