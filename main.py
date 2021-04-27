@@ -62,7 +62,7 @@ else:
         if json_data['exercise'] == 3:
             p = MultiLayerPerceptron(json_data['alpha'], json_data['beta'], json_data['limit'], json_data['hiddenLayers'],
                 json_data['error'], json_data['errorRange'], json_data['N'], json_data['isAdaptive'], 
-                json_data['a'], json_data['b'])
+                json_data['a'], json_data['b'], json_data['trainingSize'])
             ans = p.train(json_data['function'])
             plotter.plotEx3Errors(ans['errorEpoch'], ans['wErrorEpoch'])
             plotter.plotAccuracy(ans['accuracy'])

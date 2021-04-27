@@ -16,6 +16,7 @@
     "a": 0.001,
     "b": 0.01,
     "isAdaptive": true,
-    "function": "XOR",
-    "exercise": 2
+    "function": "EVEN",
+    "exercise": 2,
+    "trainingSize": 180
 }

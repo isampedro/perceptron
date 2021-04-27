@@ -14,7 +14,7 @@ import plotter
 
 class MultiLayerPerceptron:
     
-    def __init__(self, alpha, beta, iterations, hiddenLayers, error, errorRange, nodesPerLayer, adaptive, a, b):
+    def __init__(self, alpha, beta, iterations, hiddenLayers, error, errorRange, nodesPerLayer, adaptive, a, b, trainingSize):
         self.alpha = alpha 
         self.beta = beta 
         self.iterations = iterations # máxima cantidad de épocas que puede tener el algoritmo
@@ -26,6 +26,42 @@ class MultiLayerPerceptron:
         self.adaptive = adaptive
         self.a = a
         self.b = b
+        self.trainingSize = trainingSize
+        self.readContent = []
+
+
+
+    def readFile(self, size, test):
+        if test == True:
+            X = self.readEj(5,7,10,test).tolist()
+            Y = self.readContent.tolist()
+            if len(Y) < 10:
+                for elem in Y:
+                    X.remove(elem)
+            return X
+        if test != True:
+            return self.readEj(5,7,10,test)
+
+    def readEj(self, width, height, amount, test):
+        f = open('mapa-de-pixeles.txt', 'r')
+        linesf = f.read().split('\n')
+        valuesf = [line.strip() for line in linesf]
+        values_indiv = [line.split(' ') for line in valuesf]
+        data = np.zeros((10, width*height + 2))
+        data2 = np.zeros((amount, width*height + 2))
+        for index in range(10):
+            for fila in range(height):
+                for col in range(width):
+                    data[index][1+col+fila*width] = int(values_indiv[index*height+fila][col])
+        for i in range(len(data)):
+            data[i][0] = 1
+            data[i][-1] = (i%2 * 2) - 1
+        np.random.shuffle(data)
+        data2 = data[0:amount]
+        if not test:
+            self.readContent = data2
+        return data2
+
 
     # g() es la función que utilizo --> g(h) = tangh(beta * h)
     def g(self, x):
@@ -66,6 +102,9 @@ class MultiLayerPerceptron:
                     [1.0, -1.0, 1.0, 1.0],
                     [1.0, 1.0, -1.0, 1.0],
                     [1.0, -1.0, -1.0, -1.0]]
+        
+        if ej == "EVEN":
+            data = self.readFile(self.trainingSize, False)
 
         errorEpoch = []
         wErrorEpoch = []
@@ -73,11 +112,13 @@ class MultiLayerPerceptron:
 
         errorMin = len(data) * 2
 
-         
-        test_data = [[1.0,  1.0,  1.0, -1.0],
-                    [1.0, -1.0,  1.0,  1.0],
-                    [1.0,  1.0, -1.0,  1.0],
-                    [1.0, -1.0, -1.0, -1.0]]
+        if ej == "XOR":         
+            test_data = [[1.0,  1.0,  1.0, -1.0],
+                        [1.0, -1.0,  1.0,  1.0],
+                        [1.0,  1.0, -1.0,  1.0],
+                        [1.0, -1.0, -1.0, -1.0]]
+        if ej == "EVEN":
+            test_data = self.readFile(self.trainingSize, True)
         test_error_per_epoch = []
         test_worst_error_per_epoch = []
         test_accuracy = []
@@ -205,9 +246,9 @@ def makeTest(self, test_data, weights, epoch, test_error, test_worst_error, test
             negatives +=1
         if abs(perceptron_output - row[-1]) > worst_error:
             worst_error = abs(perceptron_output - row[1])
-        total_error.append(total_error / len(test_data))
-        test_worst_error.append(worst_error)
-        test_accuracy.append(positives / (0.0 + positives + negatives))
+    total_error.append(total_error / len(test_data))
+    test_worst_error.append(worst_error)
+    test_accuracy.append(positives / (0.0 + positives + negatives))
         
     
 
