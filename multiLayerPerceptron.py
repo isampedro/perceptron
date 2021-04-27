@@ -1,6 +1,6 @@
 import numpy as np
 import plotter
-
+import simpleFileParser as sfp
 
 
 # El índice i se refiere a las unidades de salida
@@ -33,8 +33,8 @@ class MultiLayerPerceptron:
 
     def readFile(self, size, test):
         if test == True:
-            X = self.readEj(5,7,10,test).tolist()
-            Y = self.readContent.tolist()
+            X = self.readEj(5,7,10,test)
+            Y = self.readContent
             if len(Y) < 10:
                 for elem in Y:
                     X.remove(elem)
@@ -43,24 +43,8 @@ class MultiLayerPerceptron:
             return self.readEj(5,7,10,test)
 
     def readEj(self, width, height, amount, test):
-        f = open('mapa-de-pixeles.txt', 'r')
-        linesf = f.read().split('\n')
-        valuesf = [line.strip() for line in linesf]
-        values_indiv = [line.split(' ') for line in valuesf]
-        data = np.zeros((10, width*height + 2))
-        data2 = np.zeros((amount, width*height + 2))
-        for index in range(10):
-            for fila in range(height):
-                for col in range(width):
-                    data[index][1+col+fila*width] = int(values_indiv[index*height+fila][col])
-        for i in range(len(data)):
-            data[i][0] = 1
-            data[i][-1] = (i%2 * 2) - 1
-        np.random.shuffle(data)
-        data2 = data[0:amount]
-        if not test:
-            self.readContent = data2
-        return data2
+        a = sfp.parseFile('mapa-de-pixeles.txt')
+        return a
 
 
     # g() es la función que utilizo --> g(h) = tangh(beta * h)
@@ -123,9 +107,9 @@ class MultiLayerPerceptron:
         test_worst_error_per_epoch = []
         test_accuracy = []
         
-        
         # M es el índice de la capa superior 
         self.M = self.totalLayers - 1
+        self.nodesPerLayer = max(self.nodesPerLayer, len(data[0]))
         # nodos en la capa superior
         self.exitNodes = 1
         # inicializo el estado de activación de todas las unidades en la capa oculta --> [capa, nro de nodo]
@@ -139,7 +123,7 @@ class MultiLayerPerceptron:
         # inicializo las conexiones entre capas [capa destino, nodo destino, nodo origen]
         self.W = np.random.rand(self.M+1, self.nodesPerLayer, self.nodesPerLayer)
         #  conexiones de los nodos de entrada y la capa oculta [nodo destino, nodo origen]
-        w = np.random.rand(self.nodesPerLayer, len(data[0]))
+        w = np.random.rand(self.nodesPerLayer, len(data[0]) - 1)
         self.W[1,:,:] = np.zeros((self.nodesPerLayer, self.nodesPerLayer))
         # inicializo en 0 los errores en las capas 
         self.d = np.zeros((self.M + 1, self.nodesPerLayer))
