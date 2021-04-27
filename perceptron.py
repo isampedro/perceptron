@@ -27,4 +27,4 @@ def simplePerceptron(entry, expectedExit, N, K, eta, calculateError, g, MAX_ROUN
             error_min = error
             w_min = w
         i = i + 1
-    return { 'errors': errors, 'w_min': w_min.tolist(), 'accuracies': accuracies }
+    return { 'errors': errors, 'w_min': w_min.tolist(), 'accuraciesTesting': accuracies, 'accuraciesTraining': accuracies }
