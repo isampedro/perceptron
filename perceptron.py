@@ -26,6 +26,7 @@ def simplePerceptron(entry, expectedExit, N, K, eta, calculateError, g, MAX_ROUN
     errorsTesting = []
     accuracies = []
     accuraciesTesting = []
+    minError = np.inf
     i = 0
     while error > 0 and i < MAX_ROUNDS:
         i_k = i % (int(K*trainingQ)-1)
@@ -36,6 +37,8 @@ def simplePerceptron(entry, expectedExit, N, K, eta, calculateError, g, MAX_ROUN
         errors.append({'error': error, 'iteration': i})
         error = calculateError(entryTestingArr, expectedExitTestingArr, w, g, K - int(K*trainingQ), beta)
         errorsTesting.append({'error': error, 'iteration': i})
+        if error < minError:
+            minError = error
         accuracy = cError.accuracy(entryArr, expectedExitArr, w, g, int(K*trainingQ), beta, deltaError)
         accuracies.append(accuracy)
         accuracy = cError.accuracy(entryTestingArr, expectedExitTestingArr, w, g, K - int(K*trainingQ), beta, deltaError)
@@ -47,7 +50,7 @@ def simplePerceptron(entry, expectedExit, N, K, eta, calculateError, g, MAX_ROUN
         epochs += 1
         if epochs % 8 == 0 and isAdaptive:
             eta = adaptiveAlpha(errors, eta, a, b)
-    return { 'errors': errors, 'errorsTesting': errorsTesting, 'w_min': w_min.tolist(), 'accuracyTesting': accuraciesTesting, 'accuracyTraining': accuracies, 'finalEta': eta }
+    return { 'errors': errors, 'errorsTesting': errorsTesting, 'w_min': w_min.tolist(), 'accuracyTesting': accuraciesTesting, 'accuracyTraining': accuracies, 'finalEta': eta, 'minError': minError}
 
 def adaptiveAlpha(errors, eta, a, b):
     if(len(errors) > 8):
@@ -72,7 +75,7 @@ def crossValidation(inputArr, expectedOutput, N, K, eta, calculateError, g, MAX_
     expectedOutputGroups = np.array_split(expectedOutput, k)
     trainingInputList = []
     trainingExpectedOutputList = []
-    answers = []
+    winner = None
 
     #ITERO POR CADA GRUPO, MANTENIENDO LA i DE PIVOTE
     for i in range(k):
@@ -83,8 +86,9 @@ def crossValidation(inputArr, expectedOutput, N, K, eta, calculateError, g, MAX_
             if j != i:
                 trainingInputList.extend(inputGroups[j].tolist())
                 trainingExpectedOutputList.extend(expectedOutputGroups[j].tolist())
-
-        #ITERO HASTA MAX_ROUNDS
         ans = simplePerceptron(trainingInputList.copy(), trainingExpectedOutputList.copy(), N, k, eta, calculateError, g, MAX_ROUNDS, beta, errorMinStart, deltaWFunc,
             gder, exercise, deltaError, inputGroups[i].tolist().copy(), expectedOutputGroups[i].tolist().copy(), 0.9, isAdaptive, a, b)
-    return ans
+        if winner == None or ans['minError'] < winner['minError']:
+            winner = ans
+        
+    return winner
