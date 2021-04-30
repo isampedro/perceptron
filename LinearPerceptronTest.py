@@ -28,7 +28,8 @@ def fit(initial_weights, learn_factor, inputs, expected_values, limit):
 
         if i == limit - 1:
             print ("Epochs: ", epochs)
-            print("Train error: ", error)
+            print(samples)
+            print("Train error: ", error / samples)
             return new_weights, error, epochs
 
 def predict(inputs, expected_values, weights):
@@ -41,6 +42,8 @@ def predict(inputs, expected_values, weights):
         theta = np.dot(weights, x[i])
         error += np.power(expected_values[i] - theta, 2) / 2
         outputs = np.append(outputs, theta)
+    print(samples)
+    error = error / samples
     return outputs, error
 
 
