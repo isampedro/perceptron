@@ -1,6 +1,6 @@
 import numpy as np
 import plotter
-import simpleFileParser as sfp
+from file_reader import Reader
 
 
 # El índice i se refiere a las unidades de salida
@@ -31,20 +31,9 @@ class MultiLayerPerceptron:
 
 
 
-    def readFile(self, size, test):
-        if test == True:
-            X = self.readEj(5,7,10,test)
-            Y = self.readContent
-            if len(Y) < 10:
-                for elem in Y:
-                    X.remove(elem)
-            return X
-        if test != True:
-            return self.readEj(5,7,10,test)
+    
 
-    def readEj(self, width, height, amount, test):
-        a = sfp.parseFile('mapa-de-pixeles.txt')
-        return a
+    
 
 
     # g() es la función que utilizo --> g(h) = tangh(beta * h)
@@ -88,7 +77,8 @@ class MultiLayerPerceptron:
                     [1.0, -1.0, -1.0, -1.0]]
         
         if ej == "EVEN":
-            data = self.readFile(self.trainingSize, False)
+            r = Reader('Ej3')
+            data = r.readFile(size=self.trainingSize)
 
         errorEpoch = []
         wErrorEpoch = []
@@ -102,7 +92,7 @@ class MultiLayerPerceptron:
                         [1.0,  1.0, -1.0,  1.0],
                         [1.0, -1.0, -1.0, -1.0]]
         if ej == "EVEN":
-            test_data = self.readFile(self.trainingSize, True)
+            test_data = r.readFile(size=self.trainingSize, test=True)
         test_error_per_epoch = []
         test_worst_error_per_epoch = []
         test_accuracy = []
