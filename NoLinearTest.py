@@ -88,7 +88,6 @@ class SimplePerceptronNoLinear:
                 
                 error_this_epoch = total_error / len(train_data)
                 error_per_epoch.append(error_this_epoch)
-                print(error_this_epoch)
                 #if self.adaptive and epoch % 10 == 0:
                  #   self.adjust_learning_rate(error_per_epoch_linear)
                 eta_per_epoch.append(self.eta)
