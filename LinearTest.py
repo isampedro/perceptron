@@ -34,6 +34,7 @@ class SimplePerceptron:
             return (0.5 * (sqr_errors_sum))[0] 
         else:
             return 0.5 * (sqr_errors_sum)
+
     def adjust_learning_rate(self, errors_so_far):
         if(len(errors_so_far) > 10):
             last_10_errors = errors_so_far[-10:]
@@ -53,7 +54,7 @@ class SimplePerceptron:
         plotter = Plotter()
         init_weights = np.random.rand(len(train_data[0]) -1, 1)
         weights = init_weights.copy()
-        error_min = len(train_data) * 2
+        error_min = 100000000
         error_this_epoch = 1
         w_min = init_weights.copy()
         error_per_epoch = []
@@ -65,7 +66,7 @@ class SimplePerceptron:
                 total_error = 0
                 for i in range(len(train_data)):
                     # exitacion = x(i x,:) * w
-                    sumatoria = self.getSum(train_data[i][:-1], weights)
+                    sumatoria = np.dot(train_data[i][:-1], weights)
                     # activacion = signo(exitacion);
                     activation = self.getActivation(sumatoria)
                     # expected_value - my_output_value
@@ -77,10 +78,10 @@ class SimplePerceptron:
                         weights[j] += (fixed_diff * train_data[i][j])
                     total_error += error ** 2
                 
-                error_this_epoch = self.error_function(total_error) / len(train_data)
-                if epoch != 0 and epoch != 1 and epoch != 2 and epoch != 3 and epoch != 4 and epoch != 5 and epoch != 6 and epoch != 7:
+                error_this_epoch = total_error / len(train_data)
+                if epoch > 250:
                     error_per_epoch.append(error_this_epoch)
-                    print(error_this_epoch)
+                print(error_this_epoch)
                 #if self.adaptive and epoch % 10 == 0:
                  #   self.adjust_learning_rate(error_per_epoch_linear)
                 eta_per_epoch.append(self.eta)
@@ -89,7 +90,7 @@ class SimplePerceptron:
                 if error_this_epoch < error_min:
                     error_min = error_this_epoch
                     w_min = weights
-                if epoch != 0 and epoch != 1 and epoch != 2 and epoch != 3 and epoch != 4 and epoch != 5 and epoch != 6 and epoch != 7:
+                if epoch > 250:
                     test_error_per_epoch.append(self.test_perceptron(test_data, w_min, print_=False))
 
         print('*************** RESULTS ***************')
@@ -101,7 +102,7 @@ class SimplePerceptron:
         self.test_perceptron(test_data, w_min, print_= False)
         print('***************************************')
         
-        plotter.create_plot_ej2(error_per_epoch, test_error_per_epoch, eta_per_epoch, linear=False)
+        plotter.create_plot_ej2(error_per_epoch, test_error_per_epoch, eta_per_epoch, linear=True)
         #plotter.create_plot_ej2(error_per_epoch_non_linear, test_error_per_epoch_non_linear, alpha_per_epoch_non_linear, linear=False)
         return
 

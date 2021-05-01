@@ -59,7 +59,7 @@ class SimplePerceptronNoLinear:
         plotter = Plotter()
         init_weights = np.random.rand(len(train_data[0]) -1, 1)
         weights = init_weights.copy()
-        error_min = len(train_data) * 2
+        error_min = 1000000
         error_this_epoch = 1
         w_min = init_weights.copy()
         error_per_epoch = []
@@ -85,10 +85,9 @@ class SimplePerceptronNoLinear:
                         weights[j] += (const * train_data[i][j])
                     total_error += self.denormalize(error, max_, min_)**2
                 
-                error_this_epoch = self.error_function(total_error) / len(train_data)
-                if epoch != 0 and epoch != 1 and epoch != 2 and epoch != 3 and epoch != 4 and epoch != 5 and epoch != 6 and epoch != 7:
-                    error_per_epoch.append(error_this_epoch)
-                    print(error_this_epoch)
+                error_this_epoch = total_error / len(train_data)
+                error_per_epoch.append(error_this_epoch)
+                print(error_this_epoch)
                 #if self.adaptive and epoch % 10 == 0:
                  #   self.adjust_learning_rate(error_per_epoch_linear)
                 eta_per_epoch.append(self.eta)
@@ -97,8 +96,7 @@ class SimplePerceptronNoLinear:
                 if error_this_epoch < error_min:
                     error_min = error_this_epoch
                     w_min = weights
-                if epoch != 0 and epoch != 1 and epoch != 2 and epoch != 3 and epoch != 4 and epoch != 5 and epoch != 6 and epoch != 7:
-                    test_error_per_epoch.append(self.test_perceptron(test_data, w_min, max_, min_, print_=False))
+                test_error_per_epoch.append(self.test_perceptron(test_data, w_min, max_, min_, print_=False))
 
         print('*************** RESULTS ***************')
         print('Analysis for training set:')
@@ -109,7 +107,7 @@ class SimplePerceptronNoLinear:
         self.test_perceptron(test_data, w_min, max_, min_, print_= False)
         print('***************************************')
         
-        plotter.create_plot_ej2(error_per_epoch, test_error_per_epoch, eta_per_epoch, linear=True)
+        plotter.create_plot_ej2(error_per_epoch, test_error_per_epoch, eta_per_epoch, linear=False)
         #plotter.create_plot_ej2(error_per_epoch_non_linear, test_error_per_epoch_non_linear, alpha_per_epoch_non_linear, linear=False)
         return
 
