@@ -79,7 +79,7 @@ class SimplePerceptron:
                     total_error += error ** 2
                 
                 error_this_epoch = total_error / len(train_data)
-                if epoch > 250:
+                if epoch > 1:
                     error_per_epoch.append(error_this_epoch)
                 print(error_this_epoch)
                 #if self.adaptive and epoch % 10 == 0:
@@ -90,7 +90,7 @@ class SimplePerceptron:
                 if error_this_epoch < error_min:
                     error_min = error_this_epoch
                     w_min = weights
-                if epoch > 250:
+                if epoch > 1:
                     test_error_per_epoch.append(self.test_perceptron(test_data, w_min, print_=False))
 
         print('*************** RESULTS ***************')

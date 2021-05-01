@@ -11,7 +11,7 @@ class Reader:
     def readFile(self, k):
         
         if self.excercise == 'Ej2':
-            return self.readExcerciseTwo2(k)
+            return self.readExcerciseTwo(k)
         
 
     def readExcerciseTwo(self, k):

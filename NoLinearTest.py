@@ -71,7 +71,7 @@ class SimplePerceptronNoLinear:
                 total_error = 0
                 for i in range(len(train_data)):
                     # exitacion = x(i x,:) * w
-                    sumatoria = self.getSum(train_data[i][:-1], weights)
+                    sumatoria = np.dot(train_data[i][:-1], weights)
                     # activacion = signo(exitacion);
                     activation = self.getActivation(sumatoria)
                     # expected_value - my_output_value
@@ -79,7 +79,7 @@ class SimplePerceptronNoLinear:
                     # ∆w = η * (y(1,i x) - activacion) * x(i x,:)’;     donde (y(1,i x) - activacion) = error_linear
                     fixed_diff = self.eta * error
                     derivated = self.sigmoid_derivated(sumatoria)
-                    const = fixed_diff * derivated[0]
+                    const = np.dot(fixed_diff, derivated)
                     # w = w + ∆w --> actualizo los pesos
                     for j in range(len(weights)):
                         weights[j] += (const * train_data[i][j])
