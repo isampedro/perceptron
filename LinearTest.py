@@ -62,6 +62,7 @@ class SimplePerceptron:
         test_error_per_epoch = []
 
         for epoch in range(self.epochs):
+            np.random.shuffle(train_data)
             if error_this_epoch > 0:
                 total_error = 0
                 for i in range(len(train_data)):
