@@ -45,8 +45,72 @@ class SimplePerceptron:
                 self.eta += 0.001
             elif not all(booleans):
                 self.eta -= 0.01 * self.eta
-            
 
+    def crossValidation(self, operand):
+        r = Reader('Ej2')
+        train_data, test_data = r.readFile(self.k) # agarramos los datos de los txt
+        blocks = np.split(np.array(train_data.copy()), self.k)
+        plotter = Plotter()
+        init_weights = np.random.rand(len(train_data[0]) -1, 1)
+        weights = init_weights.copy()
+        error_min = 100000000
+        error_this_epoch = 1
+        w_min = init_weights.copy()
+        error_per_epoch = []
+        eta_per_epoch = []
+        test_error_per_epoch = []
+        selectedBlock = 0
+        
+        for selectedBlock in range(self.k):
+            test_data = blocks[selectedBlock].copy()
+            train_data = []
+            for i in range(self.k):
+                    if i != selectedBlock:
+                        train_data.extend(blocks[i].copy())
+            for epoch in range(self.epochs):
+                np.random.shuffle(train_data)
+                np.random.shuffle(test_data)
+                if error_this_epoch > 0:
+                    total_error = 0
+                    for i in range(len(train_data)):
+                        sumatoria = np.dot(train_data[i][:-1], weights)
+                        activation = self.getActivation(sumatoria)
+                        error = train_data[i][-1] - activation
+                        fixed_diff = self.eta * error
+                        for j in range(len(weights)):
+                            weights[j] += (fixed_diff * train_data[i][j])
+                        total_error += error ** 2
+                    error_this_epoch = total_error / len(train_data)
+                    if epoch > 50:
+                        error_per_epoch.append(error_this_epoch)
+                        #if self.adaptive and epoch % 10 == 0:
+                        #   self.adjust_learning_rate(error_per_epoch_linear)
+                    eta_per_epoch.append(self.eta)
+                    if epoch == 0:
+                        error_min = error_this_epoch
+                    if error_this_epoch < error_min:
+                        error_min = error_this_epoch
+                        w_min = weights
+                    if epoch > 50:
+                        test_error_per_epoch.append(self.test_perceptron(test_data, w_min, print_=False))
+            print('*************** RESULTS ***************')
+            print('Analysis for training set:')
+            print('Epochs: {}'.format(epoch + 1))
+            print('Initial alpha linear: {}'.format(self.initial_eta))
+            print('End alpha linear: {}'.format(self.eta))
+            print('***************************************')
+            self.test_perceptron(test_data, w_min, print_= False)
+            print('***************************************')
+            plotter.create_plot_ej2(error_per_epoch, test_error_per_epoch, eta_per_epoch, linear=True)
+            #plotter.create_plot_ej2(error_per_epoch_non_linear, test_error_per_epoch_non_linear, alpha_per_epoch_non_linear, linear=False)
+            weights = init_weights.copy()
+            error_min = 100000000
+            error_this_epoch = 1
+            w_min = init_weights.copy()
+            error_per_epoch = []
+            eta_per_epoch = []
+            test_error_per_epoch = []
+        return
 
     def algorithm(self, operand):
         r = Reader('Ej2')

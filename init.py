@@ -22,6 +22,6 @@ with open('input.json', 'r') as j:
     adaptive = 'FALSE'
     k = json_data['K']
 
-p = SimplePerceptronNoLinear(eta=alpha, epochs=epochs, beta=beta, adaptive=adaptive, k=k)
+p = SimplePerceptron(eta=alpha, epochs=epochs, beta=beta, adaptive=adaptive, k=k)
 
-p.algorithm(operand)
+p.crossValidation(operand)
