@@ -16,8 +16,21 @@ class Plotter:
             #if linear: alphas[i] *= 50000
             #else: alphas[i] *= 10000
             epochs.append(i)
+        
         plt.plot(epochs, errors, label='Errores de entrenamiento')
         plt.plot(epochs, test_errors, label='Errores de testeo')
+        #plt.plot(epochs, alphas, label='Variacion del aprendizaje')
+        plt.legend(fontsize = 8, loc = 0)
+        plt.grid(True)
+        plt.show()
+
+        epochs = []
+        for i in range(250, len(errors)):
+            epochs.append(i)
+        errorsp = errors[250:len(errors)]
+        test_errorsp = test_errors[250:len(errors)]
+        plt.plot(epochs, errorsp, label='Errores de entrenamiento')
+        plt.plot(epochs, test_errorsp, label='Errores de testeo')
         #plt.plot(epochs, alphas, label='Variacion del aprendizaje')
         plt.legend(fontsize = 8, loc = 0)
         plt.grid(True)
