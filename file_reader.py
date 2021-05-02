@@ -12,7 +12,6 @@ class Reader:
         if self.excercise == 'Ej2':
             if linear:
                 if cross:
-                    print('llegamos')
                     return self.readExcerciseTwoCross(k)
                 else:
                     return self.readExcerciseTwo(k)
