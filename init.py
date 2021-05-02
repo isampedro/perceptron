@@ -19,7 +19,7 @@ with open('input.json', 'r') as j:
     classification_margin = json_data['CLASSIFICATION_MARGIN']
     hidden_layers = json_data['HIDDEN_LAYERS']
     nodes_per_layer = json_data['NODES_PER_LAYER']
-    adaptive = 'FALSE'
+    adaptive = json_data['ADAPTIVE_LEARNING_RATE']
     linear = json_data['LINEAR']
     cross = json_data['CROSS']
     k = json_data['K']
