@@ -6,13 +6,15 @@ from plotter import Plotter
 
 class SimplePerceptron:
 
-    def __init__(self, eta, epochs, beta, adaptive, k):
+    def __init__(self, eta, epochs, beta, adaptive, k, linear, cross):
         self.eta = eta
         self.initial_eta = eta
         self.epochs = epochs
         self.beta = beta
         self.adaptive = adaptive
         self.k = k
+        self.linear = linear
+        self.cross = cross
 
 
 
@@ -48,7 +50,8 @@ class SimplePerceptron:
 
     def crossValidation(self, operand):
         r = Reader('Ej2')
-        train_data, test_data = r.readFile(self.k) # agarramos los datos de los txt
+        train_data, test_data = r.readFile(self.k, self.linear, self.cross) # agarramos los datos de los txt
+        print(len(train_data))
         blocks = np.split(np.array(train_data.copy()), self.k)
         plotter = Plotter()
         init_weights = np.random.rand(len(train_data[0]) -1, 1)
@@ -114,7 +117,7 @@ class SimplePerceptron:
 
     def algorithm(self, operand):
         r = Reader('Ej2')
-        train_data, test_data = r.readFile(self.k) # agarramos los datos de los txt
+        train_data, test_data = r.readFile(self.k, self.linear, self.cross) # agarramos los datos de los txt
         plotter = Plotter()
         init_weights = np.random.rand(len(train_data[0]) -1, 1)
         weights = init_weights.copy()

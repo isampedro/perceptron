@@ -20,8 +20,16 @@ with open('input.json', 'r') as j:
     hidden_layers = json_data['HIDDEN_LAYERS']
     nodes_per_layer = json_data['NODES_PER_LAYER']
     adaptive = 'FALSE'
+    linear = json_data['LINEAR']
+    cross = json_data['CROSS']
     k = json_data['K']
 
-p = SimplePerceptronNoLinear(eta=alpha, epochs=epochs, beta=beta, adaptive=adaptive, k=k)
+if linear:
+    p = SimplePerceptron(eta=alpha, epochs=epochs, beta=beta, adaptive=adaptive, k=k, linear=linear, cross=cross)
+else:
+    p = SimplePerceptronNoLinear(eta=alpha, epochs=epochs, beta=beta, adaptive=adaptive, k=k, linear=linear, cross=cross)
 
-p.crossValidation(operand)
+if cross:
+    p.crossValidation(operand)
+else:
+    p.algorithm(operand)
