@@ -90,7 +90,7 @@ class SimplePerceptronNoLinear:
                             weights[j] += (const * train_data[i][j])
                         total_error += error ** 2
                     error_this_epoch = total_error / len(train_data)
-                    if epoch > 50:
+                    if epoch > 1:
                         error_per_epoch.append(error_this_epoch)
                         #if self.adaptive and epoch % 10 == 0:
                         #   self.adjust_learning_rate(error_per_epoch_linear)
@@ -100,7 +100,7 @@ class SimplePerceptronNoLinear:
                     if error_this_epoch < error_min:
                         error_min = error_this_epoch
                         w_min = weights
-                    if epoch > 50:
+                    if epoch > 1:
                         test_error_per_epoch.append(self.test_perceptron(test_data, w_min, max_, min_, print_=False))
             print('*************** RESULTS ***************')
             print('Analysis for training set:')
