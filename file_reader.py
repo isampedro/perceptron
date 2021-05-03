@@ -8,10 +8,12 @@ class Reader:
         self.excercise = excercise
         self.readContent = []
     
-    def readFile(self, k):
+    def readFile(self, size, cross_validation, k):
+        if self.excercise == 'Ej3':
+            return self.readExerciseThree(size, cross_validation, k)
+           
         
-        if self.excercise == 'Ej2':
-            return self.readExcerciseTwo2(k)
+       
         
 
     def readExcerciseTwo(self, k):
@@ -113,6 +115,65 @@ class Reader:
             test[i].append(float(valuesg[testing_indexes_list[i]]))
             
         return train, test, max_out, min_out
+
+    def ex_3(self, amount, cross_validation, k):
+        # un número está representados por imágenes de 5 x 7 pixeles
+        width = 5
+        height = 7
+        f = open('mapa-de-pixeles.txt', 'r')
+        linesf = f.read().split('\n')
+        valuesf = [line.strip() for line in linesf]
+        values_indiv = [line.split(' ') for line in valuesf]
+        # +2 porque a cada número le tengo que agregar el bias y el expected output
+        data = np.zeros((10, width * height + 2))
+        # tengo 10 números (del 0 al 9)
+        for index in range(10):
+            for row in range(height):
+                for col in range(width):
+                    data[index][1 + col + row * width] = int(values_indiv[index * height + row][col])
+        for i in range(len(data)):
+            # agrego el bias
+            data[i][0] = 1
+            # -1 si es par, 1 si es impar
+            data[i][-1] = (i % 2 * 2) - 1
+        np.random.shuffle(data)
+        if cross_validation:
+            test_data = data[0:k]
+            train_data = data[k:]
+        else:
+            train_data = data[0:amount]
+            test_data = data[amount:]
+       
+        return train_data, test_data
+
+    def readExerciseThree(self, amount, cross_validation, k):
+        width = 5
+        height = 7
+        f = open('mapa-de-pixeles.txt', 'r')
+        linesf = f.read().split('\n')
+        valuesf = [line.strip() for line in linesf]
+        values_indiv = [line.split(' ') for line in valuesf]
+        data = np.zeros((10, width*height + 2))
+        train_data = np.zeros((amount, width*height + 2))
+        test_data = np.zeros((10-amount, width*height + 2))
+        for index in range(10):                    
+            for fila in range(height):
+                for col in range(width):
+                    data[index][1+col+fila*width] = int(values_indiv[index*height+fila][col])
+        for i in range(len(data)):
+            data[i][0] = 1
+            data[i][-1] = (i%2 * 2) - 1
+        np.random.shuffle(data)
+        
+        if cross_validation:
+            test_data = data[:]
+            train_data = data[:]
+            
+        else:
+            train_data = data[0:amount]
+            test_data = data[amount:]
+        
+        return train_data, test_data
 
    
         
