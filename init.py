@@ -25,12 +25,19 @@ with open('input.json', 'r') as j:
     hidden_layers = json_data['HIDDEN_LAYERS']
     nodes_per_layer = json_data['NODES_PER_LAYER']
     cross_validation = json_data['CROSS_VALIDATION']
+    linear = json_data['LINEAR']
+    cross = json_data['CROSS']
+    adaptive = json_data['ADAPTIVE_LEARNING_RATE']
     k = json_data['K']
 
 if cross_validation == "FALSE":
     cross_validation = False
 else:
     cross_validation = True
+if linear:
+    p = SimplePerceptron(eta=alpha, epochs=epochs, beta=beta, adaptive=adaptive, k=k, linear=linear, cross=cross)
+else:
+    p = SimplePerceptronNoLinear(eta=alpha, epochs=epochs, beta=beta, adaptive=adaptive, k=k, linear=linear, cross=cross)
 
 if adaptive_eta == "FALSE":
     adaptive_eta  = False
@@ -61,3 +68,7 @@ if cross_validation:
         p.algorithm_cross_validation("EVEN", train_data, test_data)
     else:
         p.algorithm("EVEN") 
+if cross:
+    p.crossValidation(operand)
+else:
+    p.algorithm(operand)

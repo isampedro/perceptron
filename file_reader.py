@@ -8,13 +8,70 @@ class Reader:
         self.excercise = excercise
         self.readContent = []
     
-    def readFile(self, size, cross_validation, k):
+    def readFile(self, k, linear, cross):
+        if self.excercise == 'Ej2':
+            if linear:
+                if cross:
+                    return self.readExcerciseTwoCross(k)
+                else:
+                    return self.readExcerciseTwo(k)
+            else:
+                if cross:
+                    return self.readExcerciseTwoNonLinearCross(k)
+                else:
+                    return self.readExcerciseTwoNonLinear(k)
         if self.excercise == 'Ej3':
             return self.readExerciseThree(size, cross_validation, k)
-           
         
-       
+    def readExcerciseTwoCross(self, k):
+        f = open('TP3-ej2-Conjunto-entrenamiento.txt', 'r')
+        g = open('TP3-ej2-Salida-deseada.txt', 'r')
+        # separo por filas
+        linesf = f.read().split('\n')
+        linesg = g.read().split('\n')
+        total_amount = len(linesf)
+        testing_amount = int (total_amount / k)
+        training_amount = total_amount - testing_amount
         
+        # strip() lo uso para quitar el espacio inicial que me genero split en cada uno de los arreglos
+        # tengo 200 arreglos donde cada uno tiene 3 elementos
+        valuesf = [line.strip() for line in linesf]
+        valuesg = [float(line.strip()) for line in linesg]
+        # separo cada arreglo y lo hago un elemento individual
+        values_indiv = [line.split(' ') for line in valuesf]
+        index = 0
+        train = []
+        training_indexes = set()
+        while len(training_indexes) < training_amount:
+            # tomo indices al azar para la data de mi conjunto de entrenamiento
+            training_indexes.add(random.randint(0, total_amount - 1))
+        training_indexes_list = list(training_indexes)
+        for i in range(training_amount):
+            # agrego el bias
+            train.append([1.0])
+            # agrego la información 
+            row = values_indiv[training_indexes_list[i]]
+            for element in row:
+                if element != '':
+                    train[i].append(float(element))
+            # agrego el valor esperado
+            train[i].append(float(valuesg[training_indexes_list[i]]))
+        
+        # Hago lo mismo ahora pero para el conjunto de prueba
+        testing_indexes_list = list(set(range(0, total_amount)) - training_indexes)
+        test = []
+        for i in range(testing_amount):
+            # agrego el bias
+            test.append([1.0])
+            # agrego la información 
+            row = values_indiv[testing_indexes_list[i]]
+            for element in row:
+                if element != '':
+                    test[i].append(float(element))
+            # agrego el valor esperado
+            test[i].append(float(valuesg[testing_indexes_list[i]]))
+        train.extend(test)
+        return train, test
 
     def readExcerciseTwo(self, k):
         f = open('TP3-ej2-Conjunto-entrenamiento.txt', 'r')
@@ -66,7 +123,57 @@ class Reader:
             
         return train, test
 
-    def readExcerciseTwo2(self, k):
+    def readExcerciseTwoNonLinearCross(self, k):
+        f = open('TP3-ej2-Conjunto-entrenamiento.txt', 'r')
+        g = open('TP3-ej2-Salida-deseada.txt', 'r')
+        # separo por filas
+        linesf = f.read().split('\n')
+        linesg = g.read().split('\n')
+        total_amount = len(linesf)
+        testing_amount = int (total_amount / k)
+        training_amount = total_amount - testing_amount
+        
+        # strip() lo uso para quitar el espacio inicial que me genero split en cada uno de los arreglos
+        # tengo 200 arreglos donde cada uno tiene 3 elementos
+        valuesf = [line.strip() for line in linesf]
+        valuesg, max_out, min_out = self.normalize_output ([float(line.strip()) for line in linesg]) 
+        # separo cada arreglo y lo hago un elemento individual
+        values_indiv = [line.split(' ') for line in valuesf]
+        index = 0
+        train = []
+        training_indexes = set()
+        while len(training_indexes) < training_amount:
+            # tomo indices al azar para la data de mi conjunto de entrenamiento
+            training_indexes.add(random.randint(0, total_amount - 1))
+        training_indexes_list = list(training_indexes)
+        for i in range(training_amount):
+            # agrego el bias
+            train.append([1.0])
+            # agrego la información 
+            row = values_indiv[training_indexes_list[i]]
+            for element in row:
+                if element != '':
+                    train[i].append(float(element))
+            # agrego el valor esperado
+            train[i].append(float(valuesg[training_indexes_list[i]]))
+        
+        # Hago lo mismo ahora pero para el conjunto de prueba
+        testing_indexes_list = list(set(range(0, total_amount)) - training_indexes)
+        test = []
+        for i in range(testing_amount):
+            # agrego el bias
+            test.append([1.0])
+            # agrego la información 
+            row = values_indiv[testing_indexes_list[i]]
+            for element in row:
+                if element != '':
+                    test[i].append(float(element))
+            # agrego el valor esperado
+            test[i].append(float(valuesg[testing_indexes_list[i]]))
+        train.extend(test)
+        return train, test, max_out, min_out
+
+    def readExcerciseTwoNonLinear(self, k):
         f = open('TP3-ej2-Conjunto-entrenamiento.txt', 'r')
         g = open('TP3-ej2-Salida-deseada.txt', 'r')
         # separo por filas

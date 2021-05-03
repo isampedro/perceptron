@@ -15,4 +15,6 @@
     "NODES_PER_LAYER": 6,
     "CROSS_VALIDATION": "TRUE",
     "K": 5
+    "CROSS": false,
+    "LINEAR": false
 }
