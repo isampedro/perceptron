@@ -11,7 +11,7 @@ import json
 with open('input.json', 'r') as j:
     json_data = json.load(j)
     perceptron = json_data['PERCEPTRON']
-    operand = json_data['FUNCTION']
+    exercise = json_data['FUNCTION']
     eta = json_data['LEARNING_RATE']
     training_size = json_data['TRAINING_SIZE']
     epochs = json_data['EPOCHS']
@@ -26,49 +26,34 @@ with open('input.json', 'r') as j:
     nodes_per_layer = json_data['NODES_PER_LAYER']
     cross_validation = json_data['CROSS_VALIDATION']
     linear = json_data['LINEAR']
-    cross = json_data['CROSS']
     adaptive = json_data['ADAPTIVE_LEARNING_RATE']
     k = json_data['K']
 
-if cross_validation == "FALSE":
-    cross_validation = False
-else:
-    cross_validation = True
-if linear:
-    p = SimplePerceptron(eta=alpha, epochs=epochs, beta=beta, adaptive=adaptive, k=k, linear=linear, cross=cross)
-else:
-    p = SimplePerceptronNoLinear(eta=alpha, epochs=epochs, beta=beta, adaptive=adaptive, k=k, linear=linear, cross=cross)
-
-if adaptive_eta == "FALSE":
-    adaptive_eta  = False
-else:
-    adaptive_eta  = True
-
-if momentum == "FALSE":
-    momentum  = False
-else:
-    momentum  = True
-    
-
-p = MultiLayerPerceptron(eta, beta, epochs, hidden_layers, nodes_per_layer,error_tolerance, adaptive_eta, delta_accuracy_error, training_size, momentum, adaptive_eta_increase, adaptive_eta_decrease, cross_validation, k)
-
-if cross_validation:
-    r = Reader('Ej3')
-    train_data, test_data = r.readFile(training_size, cross_validation, k)
-    data = train_data
-    last_partition = 0
-    split_number = 10 / k
-    for i in range(1, k):
-        partition = i * split_number
-        test_data = data[int(last_partition):int(partition)]
-        train_data1 = data[int(last_partition):]
-        train_data2 = data[int(partition):]
-        train_data = np.concatenate((train_data1, train_data2)) 
-        last_partition = partition
-        p.algorithm_cross_validation("EVEN", train_data, test_data)
+if exercise == 'EJ2':
+    if linear:
+        p = SimplePerceptron(eta=eta, epochs=epochs, beta=beta, adaptive=adaptive, k=k, linear=linear, cross=cross_validation)
     else:
-        p.algorithm("EVEN") 
-if cross:
-    p.crossValidation(operand)
+        p = SimplePerceptronNoLinear(eta=eta, epochs=epochs, beta=beta, adaptive=adaptive, k=k, linear=linear, cross=cross_validation)
+    if cross_validation:
+        p.crossValidation(exercise)
+    else:
+        p.algorithm(exercise)
 else:
-    p.algorithm(operand)
+    p = MultiLayerPerceptron(eta, beta, epochs, hidden_layers, nodes_per_layer,error_tolerance, adaptive_eta, delta_accuracy_error, training_size, momentum, adaptive_eta_increase, adaptive_eta_decrease, cross_validation, k)
+
+    if cross_validation:
+        r = Reader('Ej3')
+        train_data, test_data = r.readFile(training_size, k, False, cross_validation)
+        data = train_data
+        last_partition = 0
+        split_number = 10 / k
+        for i in range(1, k):
+            partition = i * split_number
+            test_data = data[int(last_partition):int(partition)]
+            train_data1 = data[int(last_partition):]
+            train_data2 = data[int(partition):]
+            train_data = np.concatenate((train_data1, train_data2)) 
+            last_partition = partition
+            p.algorithm_cross_validation("EVEN", train_data, test_data)
+        else:
+            p.algorithm("EVEN") 

@@ -8,7 +8,7 @@ class Reader:
         self.excercise = excercise
         self.readContent = []
     
-    def readFile(self, k, linear, cross):
+    def readFile(self, size, k, linear, cross):
         if self.excercise == 'Ej2':
             if linear:
                 if cross:
@@ -21,7 +21,7 @@ class Reader:
                 else:
                     return self.readExcerciseTwoNonLinear(k)
         if self.excercise == 'Ej3':
-            return self.readExerciseThree(size, cross_validation, k)
+            return self.readExerciseThree(size, cross, k)
         
     def readExcerciseTwoCross(self, k):
         f = open('TP3-ej2-Conjunto-entrenamiento.txt', 'r')

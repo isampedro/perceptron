@@ -50,7 +50,7 @@ class SimplePerceptron:
 
     def crossValidation(self, operand):
         r = Reader('Ej2')
-        train_data, test_data = r.readFile(self.k, self.linear, self.cross) # agarramos los datos de los txt
+        train_data, test_data = r.readFile(0,self.k, self.linear, self.cross) # agarramos los datos de los txt
         print(len(train_data))
         blocks = np.split(np.array(train_data.copy()), self.k)
         plotter = Plotter()
@@ -119,7 +119,7 @@ class SimplePerceptron:
 
     def algorithm(self, operand):
         r = Reader('Ej2')
-        train_data, test_data = r.readFile(self.k, self.linear, self.cross) # agarramos los datos de los txt
+        train_data, test_data = r.readFile(0,self.k, self.linear, self.cross) # agarramos los datos de los txt
         plotter = Plotter()
         init_weights = np.random.rand(len(train_data[0]) -1, 1)
         weights = init_weights.copy()

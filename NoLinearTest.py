@@ -55,7 +55,7 @@ class SimplePerceptronNoLinear:
             
     def crossValidation(self, operand):
         r = Reader('Ej2')
-        train_data, test_data, max_, min_ = r.readFile(self.k, self.linear, self.cross) # agarramos los datos de los txt
+        train_data, test_data, max_, min_ = r.readFile(0, self.k, self.linear, self.cross) # agarramos los datos de los txt
         blocks = np.split(np.array(train_data.copy()), self.k)
         plotter = Plotter()
         init_weights = np.random.rand(len(train_data[0]) -1, 1)
@@ -125,7 +125,7 @@ class SimplePerceptronNoLinear:
 
     def algorithm(self, operand):
         r = Reader('Ej2')
-        train_data, test_data, max_, min_ = r.readFile(self.k, self.linear, self.cross) # agarramos los datos de los txt
+        train_data, test_data, max_, min_ = r.readFile(0, self.k, self.linear, self.cross) # agarramos los datos de los txt
         plotter = Plotter()
         init_weights = np.random.rand(len(train_data[0]) -1, 1)
         weights = init_weights.copy()

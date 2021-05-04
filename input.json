@@ -1,20 +1,19 @@
 {
     "PERCEPTRON":"SIMPLE",
-    "FUNCTION":"EJ2",
+    "FUNCTION":"EJ3",
     "LEARNING_RATE":0.01,
     "TRAINING_SIZE": 6,
     "EPOCHS": 100,
     "ERROR_TOLERANCE": 0.01,
-    "MOMENTUM": "FALSE",
-    "ADAPTIVE_LEARNING_RATE":"FALSE",
+    "MOMENTUM": false,
+    "ADAPTIVE_LEARNING_RATE":false,
     "ADAPTIVE_ETA_INCREASE": 0.01,
     "ADAPTIVE_ETA_DECREASE": 0.01,
     "BETA": 0.5,
     "DELTA_ACCURACY_ERROR": 0.25,
     "HIDDEN_LAYERS": 4,
     "NODES_PER_LAYER": 6,
-    "CROSS_VALIDATION": "TRUE",
-    "K": 5
-    "CROSS": false,
+    "CROSS_VALIDATION": true,
+    "K": 5,
     "LINEAR": false
 }
