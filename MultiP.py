@@ -182,17 +182,17 @@ class MultiLayerPerceptron:
                 error_min = total_error
                 self.w_min = self.W
             if total_error/len(train_data) <= self.error_tolerance or epoch == self.epochs-1:
-                self.test_perceptron(test_data, self.w_min, epoch, test_error_per_epoch, test_worst_error_per_epoch, test_accuracy, delta_accuracy_error, True)
+                self.test_perceptron(test_data, self.w_min, epoch, test_error_per_epoch, test_worst_error_per_epoch, test_accuracy, delta_accuracy_error, True, train_accuracy, train_error_per_epoch)
                 break
             else:
-                self.test_perceptron(test_data, self.w_min, epoch, test_error_per_epoch, test_worst_error_per_epoch, test_accuracy, delta_accuracy_error, False)
+                self.test_perceptron(test_data, self.w_min, epoch, test_error_per_epoch, test_worst_error_per_epoch, test_accuracy, delta_accuracy_error, False, train_accuracy, train_error_per_epoch)
         plotter.ej3_errors(train_error_per_epoch, test_error_per_epoch)
         plotter.ej3_accuracy(train_accuracy, test_accuracy)
         return
 
     
 
-    def test_perceptron(self, test_data, weights, epoch, test_error, test_worst_error, test_accuracy, delta_accuracy_error, printing):
+    def test_perceptron(self, test_data, weights, epoch, test_error, test_worst_error, test_accuracy, delta_accuracy_error, printing, train_accuracy, train_error):
         element_count = 0
         if printing:
             print("Testing perceptron for epoch %d..." %(epoch+1))
@@ -230,6 +230,10 @@ class MultiLayerPerceptron:
         test_accuracy.append(corrects / (0.0 + corrects + incorrects))
         if printing:
             print('Analysis finished for epoch %d' %(epoch+1))
+            print('Final test accuracy: {}'.format(test_accuracy[len(test_accuracy)-1]))
+            print('Final test error: {}'.format(test_error[len(test_error)-1]))
+            print('Final train accuracy: {}'.format(train_accuracy[len(train_accuracy)-1]))
+            print('Final train error: {}'.format(train_error[len(train_error)-1]))
             print('Initial learning rate: {}'.format(self.initial_eta))
             print('End learning rate: {}'.format(self.eta))
             print('+-------------------+-------------------+')
@@ -320,10 +324,10 @@ class MultiLayerPerceptron:
                 error_min = total_error
                 self.w_min = self.W
             if total_error/len(train_data) <= self.error_tolerance or epoch == self.epochs-1:
-                self.test_perceptron(test_data, self.w_min, epoch, test_error_per_epoch, test_worst_error_per_epoch, test_accuracy, delta_accuracy_error, True)
+                self.test_perceptron(test_data, self.w_min, epoch, test_error_per_epoch, test_worst_error_per_epoch, test_accuracy, delta_accuracy_error, True, train_accuracy, train_error_per_epoch)
                 break
             else:
-                self.test_perceptron(test_data, self.w_min, epoch, test_error_per_epoch, test_worst_error_per_epoch, test_accuracy, delta_accuracy_error, False)
+                self.test_perceptron(test_data, self.w_min, epoch, test_error_per_epoch, test_worst_error_per_epoch, test_accuracy, delta_accuracy_error, False, train_accuracy, train_error_per_epoch)
         plotter.ej3_errors(train_error_per_epoch, test_error_per_epoch)
         plotter.ej3_accuracy(train_accuracy, test_accuracy)
         return
